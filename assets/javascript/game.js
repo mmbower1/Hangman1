@@ -60,6 +60,9 @@ document.addEventListener('keypress', (event) => {
 
     // if user has guesses left
     if (tries >= guesses) {
+        //alert when user loses
+        alert('You lose');
+        window.location.reload();
         return;
     }
     
@@ -103,10 +106,11 @@ document.addEventListener('keypress', (event) => {
 
         if (underScoreArray.join("") === chosenTeam) {
             alert('You win');
+            window.location.reload();
         }
-
+        
+        //After the user wins/loses the game should automatically choose another word
         //Project an image of a sports star when user wins 
-        //After the user wins/loses the game should automatically choose another word and make the user play it.
         
     }
     else {
