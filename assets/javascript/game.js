@@ -21,6 +21,8 @@ const teams = [
     "Minnesota United FC", "Colorado Rapids", "District Columbia United", "FC Dallas" 
 ];
 
+var winNum = $('#winnum');
+var lossNum = $('#lossnum');
 //randomly chooses a team
 var randomNumber = Math.floor(Math.random() * teams.length);
 var chosenTeam = teams[randomNumber].toLowerCase();
@@ -53,6 +55,30 @@ var generateScore = () => {
     console.log(underScore);
 }
 
+setVars = () => {
+    //randomly chooses a team
+    randomNumber = Math.floor(Math.random() * teams.length);
+    chosenTeam = teams[randomNumber].toLowerCase();
+    rightTeam = [];
+    wrongTeam =[];
+    underScoreArray = [];
+    underScore = "";
+    checkArray = [];
+    //max number of wrong guesses
+    guesses = 5;
+    //actual number of times user gets it wrong
+    tries = 0;        
+}
+
+var resetGame = () => {
+    setVars();
+    $('.underScore').text('')
+    $('.right').text('~Correct~');
+    $('.wrong').text('~Wrong~');
+    generateScore();
+    docScore[0].innerHTML = underScore;
+}
+
 //get users guess
 document.addEventListener('keypress', (event) => {
     var keyword = String.fromCharCode(event.keyCode);
@@ -60,9 +86,10 @@ document.addEventListener('keypress', (event) => {
 
     // if user has guesses left
     if (tries >= guesses) {
-        //alert when user loses
         alert('You lose');
-        window.location.reload();
+        console.log(lossNum.text());
+        lossNum.text(parseInt(lossNum.text()) + 1);
+        resetGame();
         return;
     }
     
@@ -75,7 +102,6 @@ document.addEventListener('keypress', (event) => {
             rightTeam.push(keyword);
         }
         
-
         //find the indexes of each necessary underscore
         for(i = 0; i < chosenTeam.length; i++) {
             console.log(keyword === chosenTeam[i]);
@@ -106,7 +132,8 @@ document.addEventListener('keypress', (event) => {
 
         if (underScoreArray.join("") === chosenTeam) {
             alert('You win');
-            window.location.reload();
+            winNum.text(parseInt(winNum.text()) + 1);
+            resetGame();
         }
         
         //After the user wins/loses the game should automatically choose another word
