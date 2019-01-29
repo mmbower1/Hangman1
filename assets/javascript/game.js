@@ -31,7 +31,6 @@ var rightTeam = [];
 var wrongTeam = [];
 var underScoreArray = [];
 var underScore = "";
-var checkArray = [];
 
 //max number of wrong guesses
 var guesses = 5;
@@ -43,6 +42,8 @@ var tries = 0;
 var docScore = document.getElementsByClassName("underScore");
 var docRightTeam = document.getElementsByClassName("right");
 var docWrongTeam = document.getElementsByClassName("wrong");
+var docGuessesLeft = document.getElementById("guesses-left");
+console.log(chosenTeam);
 
 //create underscores based on word length
 var generateScore = () => {
@@ -54,8 +55,8 @@ var generateScore = () => {
         }
     }
     underScore = underScoreArray.join('&nbsp;');
-    console.log(underScore);
-}
+};
+generateScore();
 
 var setVars = () => {
     //randomly chooses a team
@@ -65,22 +66,10 @@ var setVars = () => {
     wrongTeam = [];
     underScoreArray = [];
     underScore = "";
-    checkArray = [];
-
     //max number of wrong guesses
     guesses = 5;
-
     //actual number of times user gets it wrong
     tries = 0;
-}
-
-var resetGame = () => {
-    setVars();
-    $(".underScore").text("");
-    $(".right").text("~Correct Letters~");
-    $(".wrong").text("~Wrong Letters~");
-    generateScore();
-    docScore[0].innerHTML = underScore;
 }
 
 //get users guess
@@ -88,37 +77,21 @@ document.addEventListener("keypress", (event) => {
     var keyword = String.fromCharCode(event.keyCode);
     console.log(keyword);
 
-    // if user has guesses left
-    if (tries >= guesses) {
-        alert("You lost :(");
-        console.log(lossNum.text());
-        lossNum.text(parseInt(lossNum.text()) + 1);
-        resetGame();
-        return;
-    }
-
     //if user guess is right
     if (chosenTeam.indexOf(keyword) > -1) {
-
         //add to right teams array
         if (rightTeam.indexOf(keyword) < 0) {
             rightTeam.push(keyword);
         }
-
         //find the indexes of each necessary underscore
         for (i = 0; i < chosenTeam.length; i++) {
-            console.log(keyword === chosenTeam[i]);
             if (keyword === chosenTeam[i]) {
                 underScoreArray.splice(i, 1, keyword);
-                console.log(underScoreArray);
             }
         }
         underScore = underScoreArray.join('&nbsp;');
-
         docScore[0].innerHTML = underScore;
-
         docRightTeam[0].innerHTML = rightTeam;
-
         underScoreArray[chosenTeam.indexOf(keyword)] = keyword;
 
         //checks if user matches guess
@@ -127,18 +100,15 @@ document.addEventListener("keypress", (event) => {
                 underScoreArray[i] = ' ';
             }
         }
-        console.log(underScoreArray);
-        console.log(chosenTeam);
-        console.log(underScoreArray.join(""));
-
-        docScore[0].innerHTML = underScore;
-
+        
+        //if user wins
         if (underScoreArray.join("") === chosenTeam) {
             alert("You're a sports genius!");
             winNum.text(parseInt(winNum.text()) + 1);
             resetGame();
         }
     }
+
     else {
         if (wrongTeam.indexOf(keyword) < 0) {
             wrongTeam.push(keyword);
@@ -148,9 +118,28 @@ document.addEventListener("keypress", (event) => {
         }
     }
 
+    // if user loses
+    if (tries >= guesses) {
+        alert("You lost :(");
+        lossNum.text(parseInt(lossNum.text()) + 1);
+        resetGame();
+        return;
+    }
+
+    //if user guesses letter more than once
+    // if (underScoreArray > 1) {
+    //     winNum.text(parseInt(winNum.text()) + 0);
+    //     lossNum.text(parseInt(lossNum.text()) + 0);
+    //     alert("Already guessed that letter!");
+    // }
+
 });
 
-generateScore();
-docScore[0].innerHTML = underScore;
-// generateScore.join(' ');
-// generateScore[0].innerHTML = 'Working';
+var resetGame = () => {
+    setVars();
+    $(".underScore").text("");
+    $(".right").text("~Correct Letters~");
+    $(".wrong").text("~Wrong Letters~");
+    generateScore();
+    docScore[0].innerHTML = underScore;
+}
