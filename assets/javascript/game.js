@@ -24,7 +24,13 @@ const teams = [
 var winNum = $("#winnum");
 var lossNum = $("#lossnum");
 
-//randomly chooses a team
+//dom manipulation
+var docScore = document.getElementsByClassName("underScore");
+var docRightTeam = document.getElementsByClassName("right");
+var docWrongTeam = document.getElementsByClassName("wrong");
+var docGuessesLeft = document.getElementById("guesses-left");
+
+//variables
 var randomNumber = Math.floor(Math.random() * teams.length);
 var chosenTeam = teams[randomNumber].toLowerCase();
 var rightTeam = [];
@@ -32,17 +38,13 @@ var wrongTeam = [];
 var underScoreArray = [];
 var underScore = "";
 
-//max number of wrong guesses
 var guesses = 5;
+
+docGuessesLeft.innerHTML = guesses;
 
 //number of times user gets it wrong
 var tries = 0;
 
-//dom manipulation
-var docScore = document.getElementsByClassName("underScore");
-var docRightTeam = document.getElementsByClassName("right");
-var docWrongTeam = document.getElementsByClassName("wrong");
-var docGuessesLeft = document.getElementById("guesses-left");
 console.log(chosenTeam);
 
 //create underscores based on word length
@@ -73,13 +75,13 @@ var setVars = () => {
 }
 
 //get users guess
-document.addEventListener("keypress", (event) => {
-    var keyword = String.fromCharCode(event.keyCode);
+document.addEventListener("keypress", (e) => {
+    var keyword = String.fromCharCode(e.keyCode);
     console.log(keyword);
 
     //if user guess is right
     if (chosenTeam.indexOf(keyword) > -1) {
-        //add to right teams array
+        // add to right teams array
         if (rightTeam.indexOf(keyword) < 0) {
             rightTeam.push(keyword);
         }
@@ -89,6 +91,7 @@ document.addEventListener("keypress", (event) => {
                 underScoreArray.splice(i, 1, keyword);
             }
         }
+        //access DOM elements
         underScore = underScoreArray.join('&nbsp;');
         docScore[0].innerHTML = underScore;
         docRightTeam[0].innerHTML = rightTeam;
@@ -108,18 +111,29 @@ document.addEventListener("keypress", (event) => {
             resetGame();
         }
     }
-
+    
     else {
         if (wrongTeam.indexOf(keyword) < 0) {
             wrongTeam.push(keyword);
             docWrongTeam[0].innerHTML = wrongTeam;
+
+            //grab #guesseses-left for DOM
+            // docGuessesLeft[0].innerHTML = guessesLeft
+            //docGuessesLeft--;
+            docGuessesLeft.innerHTML = --guesses;
+            // Set the innerHTML of guesses left
+            console.log("Setting guesses left element...",docGuessesLeft);
+            //var guessesLeftElementNew = document.getElementById("guesses-left");
+            //docGuessesLeft = guessesLeftElementNew.innerHTML;
+
+            console.log('docguessesleft: ', docGuessesLeft);
             tries++;
-            console.log(tries);
+            console.log("Wrong tries: " + tries);
         }
     }
 
     // if user loses
-    if (tries >= guesses) {
+    if (guesses === 0) {
         alert("You lost :(");
         lossNum.text(parseInt(lossNum.text()) + 1);
         resetGame();
@@ -140,6 +154,7 @@ var resetGame = () => {
     $(".underScore").text("");
     $(".right").text("~Correct Letters~");
     $(".wrong").text("~Wrong Letters~");
+    $("#guesses-left").html(guesses);
     generateScore();
     docScore[0].innerHTML = underScore;
 }
