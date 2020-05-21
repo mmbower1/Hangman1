@@ -5,23 +5,16 @@ body {
 header {
     background-color: #4169E1;
     border: 3px solid blue;
-    border-radius: 15px 15px 0 0;
+    border-radius: 12px 12px 0 0;
     color: #00008B;
     height: 150px;
     font-family: 'Copperplate';
     font-size: 26px;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 15px;
     text-align: center;
     text-decoration: underline;
     width: 560px;
-}
-
-.winslosses-row {
-    left: 50px;
-    font-family: 'Copperplate';
-    font-size: 24px;
-    margin-top: 60px;
 }
 
 .underScore {
@@ -50,10 +43,17 @@ header {
     width: 560px;
 }
 
+.winslosses-row {
+    left: 50px;
+    font-family: 'Copperplate';
+    font-size: 24px;
+    margin-top: 60px;
+}
+
 .wrong {
     background-color: #CD5C5C;
     border: 3px solid darkred;
-    border-radius: 0 0 15px 15px;
+    border-radius: 0 0 12px 12px;
     color: #B22222;
     height: 150px;
     font-family: 'Copperplate';
@@ -64,8 +64,9 @@ header {
     width: 560px;
 }
 
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 800px) {
     body {
         background-color: lightblue;
+        margin-top: 300px;
     }
-}
+} */

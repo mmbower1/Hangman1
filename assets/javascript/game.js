@@ -27,8 +27,12 @@ var lossNum = $("#lossnum");
 //dom manipulation
 var docScore = document.getElementsByClassName("underScore");
 var docRightTeam = document.getElementsByClassName("right");
+var docRightTeamLetters = document.getElementsByClassName("right-letters");
 var docWrongTeam = document.getElementsByClassName("wrong");
+var docWrongTeamLetters = document.getElementsByClassName("wrong-letters");
 var docGuessesLeft = document.getElementById("guesses-left");
+var hangman = document.getElementsByClassName("hangman");
+
 
 //variables
 var randomNumber = Math.floor(Math.random() * teams.length);
@@ -85,7 +89,7 @@ document.addEventListener("keypress", (e) => {
         if (rightTeam.indexOf(keyword) < 0) {
             rightTeam.push(keyword);
         }
-        //find the indexes of each necessary underscore
+        //find the indices of each necessary underscore
         for (i = 0; i < chosenTeam.length; i++) {
             if (keyword === chosenTeam[i]) {
                 underScoreArray.splice(i, 1, keyword);
@@ -94,7 +98,7 @@ document.addEventListener("keypress", (e) => {
         //access DOM elements
         underScore = underScoreArray.join('&nbsp;');
         docScore[0].innerHTML = underScore;
-        docRightTeam[0].innerHTML = rightTeam;
+        docRightTeamLetters[0].innerHTML = rightTeam;
         underScoreArray[chosenTeam.indexOf(keyword)] = keyword;
 
         //checks if user matches guess
@@ -106,35 +110,30 @@ document.addEventListener("keypress", (e) => {
         
         //if user wins
         if (underScoreArray.join("") === chosenTeam) {
-            alert("You're a sports genius!");
+            swal("You're a sports genius!");
             winNum.text(parseInt(winNum.text()) + 1);
             resetGame();
         }
-    }
-    
-    else {
+    } else {
+        // user guess is wrong
         if (wrongTeam.indexOf(keyword) < 0) {
             wrongTeam.push(keyword);
-            docWrongTeam[0].innerHTML = wrongTeam;
+            docWrongTeamLetters[0].innerHTML = wrongTeam;
 
             //grab #guesseses-left for DOM
             // docGuessesLeft[0].innerHTML = guessesLeft
             //docGuessesLeft--;
             docGuessesLeft.innerHTML = --guesses;
-            // Set the innerHTML of guesses left
-            console.log("Setting guesses left element...",docGuessesLeft);
+            // hangman.append()
             //var guessesLeftElementNew = document.getElementById("guesses-left");
             //docGuessesLeft = guessesLeftElementNew.innerHTML;
-
-            console.log('docguessesleft: ', docGuessesLeft);
             tries++;
-            console.log("Wrong tries: " + tries);
         }
     }
 
     // if user loses
     if (guesses === 0) {
-        alert("You lost :(");
+        swal("You lost :(");
         lossNum.text(parseInt(lossNum.text()) + 1);
         resetGame();
         return;
