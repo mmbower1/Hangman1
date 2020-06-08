@@ -43,15 +43,13 @@ var underScoreArray = [];
 var underScore = "";
 
 var guesses = 5;
-
 docGuessesLeft.innerHTML = guesses;
 
 //number of times user gets it wrong
 var tries = 0;
-
 console.log(chosenTeam);
 
-//create underscores based on word length
+// create underscores based on word length
 var generateScore = () => {
     for (let i = 0; i < chosenTeam.length; i++) {
         if (' \t\n\r\v'.indexOf(chosenTeam[i]) > -1) {
@@ -76,6 +74,8 @@ var setVars = () => {
     guesses = 5;
     //actual number of times user gets it wrong
     tries = 0;
+    docRightTeamLetters[0].innerHTML = rightTeam;
+    docWrongTeamLetters[0].innerHTML = wrongTeam;
 }
 
 //get users guess
@@ -98,6 +98,7 @@ document.addEventListener("keypress", (e) => {
         //access DOM elements
         underScore = underScoreArray.join('&nbsp;');
         docScore[0].innerHTML = underScore;
+        docRightTeamLetters = document.getElementsByClassName("right-letters");
         docRightTeamLetters[0].innerHTML = rightTeam;
         underScoreArray[chosenTeam.indexOf(keyword)] = keyword;
 
@@ -115,15 +116,23 @@ document.addEventListener("keypress", (e) => {
             resetGame();
         }
     } else {
+        console.log('You guessed wrong');
+        console.log(`keyword ${keyword}`);
+        console.log(`wrongTeam.indexOf(keyword) ${wrongTeam.indexOf(keyword)}`);
         // user guess is wrong
         if (wrongTeam.indexOf(keyword) < 0) {
+            console.log(`inside inner if`);
+            console.log(`wrongTeam ${wrongTeam}`);
             wrongTeam.push(keyword);
+            docRightTeamLetters = document.getElementsByClassName("right-letters");
             docWrongTeamLetters[0].innerHTML = wrongTeam;
 
             //grab #guesseses-left for DOM
-            // docGuessesLeft[0].innerHTML = guessesLeft
+            //docGuessesLeft[0].innerHTML = docGuessesLeft
             //docGuessesLeft--;
+            console.log(`PRE guesses left ${guesses}`);
             docGuessesLeft.innerHTML = --guesses;
+            console.log(`POST guesses left ${guesses}`);
             // hangman.append()
             //var guessesLeftElementNew = document.getElementById("guesses-left");
             //docGuessesLeft = guessesLeftElementNew.innerHTML;
@@ -151,8 +160,8 @@ document.addEventListener("keypress", (e) => {
 var resetGame = () => {
     setVars();
     $(".underScore").text("");
-    $(".right").text("~Correct Letters~");
-    $(".wrong").text("~Wrong Letters~");
+    //$(".right").text("~Correct Letters~");
+    //$(".wrong").text("~Wrong Letters~");
     $("#guesses-left").html(guesses);
     generateScore();
     docScore[0].innerHTML = underScore;
